@@ -321,7 +321,7 @@
     overflow: hidden;
   }
 </style>
-<script src="https://artifactcdn.diabrowser.engineering/ajax/libs/Chart.js/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -367,26 +367,10 @@
     </label>
     <div class="advisor-fields" id="advisorFields">
       <div class="field">
-        <label>Advisor fee (year 1)</label>
+        <label>Advisor fee (per year)</label>
         <div class="amount-input">
           <span>&#8377;</span>
           <input type="number" id="fee" value="25000" min="0" step="1000">
-        </div>
-      </div>
-      <div class="field two-col">
-        <div>
-          <label>Fee rises by</label>
-          <div class="amount-input">
-            <input type="number" id="hike" value="10" min="0" step="1">
-            <span class="suffix">%</span>
-          </div>
-        </div>
-        <div>
-          <label>Every</label>
-          <div class="amount-input">
-            <input type="number" id="hikeEvery" value="3" min="1" step="1">
-            <span class="suffix">yrs</span>
-          </div>
         </div>
       </div>
       <div class="subnote">You go direct (full return) and pay the advisor from your pocket.</div>
@@ -462,9 +446,7 @@
     const ret = +$('return').value / 100;
     const drag = +$('drag').value / 100;
     const advisorOn = $('advisorOn').checked;
-    const fee0 = Math.max(0, +$('fee').value || 0);
-    const hike = (+$('hike').value || 0) / 100;
-    const hikeEvery = Math.max(1, +$('hikeEvery').value || 1);
+    const fee = Math.max(0, +$('fee').value || 0);
 
     // labels
     $('yearsVal').textContent = years + ' yrs';
@@ -476,12 +458,8 @@
     const invested = amount * years * 12;
     const lost = direct - regular;
 
-    // Advisor: full direct return, pay fees out of pocket (cash basis)
-    let totalFees = 0;
-    for (let y = 0; y < years; y++) {
-      const block = Math.floor(y / hikeEvery);
-      totalFees += fee0 * Math.pow(1 + hike, block);
-    }
+    // Advisor: full direct return, pay a flat annual fee out of pocket (cash basis)
+    const totalFees = fee * years;
     const advisorNet = direct - totalFees;
 
     // Headline %: how much more the chosen direct route leaves you vs regular
@@ -558,27 +536,16 @@
     // Footnote
     let foot = 'Assumes a level monthly SIP, returns compounded monthly, and commissions modelled as a ' + (drag*100).toFixed(1) + '% annual drag on the regular fund. ';
     if (advisorOn) {
-      foot += 'Advisor scenario compares cash fees paid against commissions avoided — real advisors often reduce fees in later years, so your edge is likely larger. ';
+      foot += 'Advisor scenario compares cash fees paid against commissions avoided. ';
     }
     foot += 'Illustrative only, not investment advice.';
     $('foot').textContent = foot;
 
-    updateChart({ amount, years, ret, drag, advisorOn, fee0, hike, hikeEvery });
+    updateChart({ amount, years, ret, drag, advisorOn, fee });
   }
 
   // ---- Line chart: corpus year by year ----
   let growthChart = null;
-
-  // Advisor fees paid up to and including a given year, future-valued to that year
-  function feesFVByYear(fee0, hike, hikeEvery, upToYear, ret) {
-    let fv = 0;
-    for (let y = 0; y < upToYear; y++) {
-      const block = Math.floor(y / hikeEvery);
-      const fee = fee0 * Math.pow(1 + hike, block);
-      fv += fee * Math.pow(1 + ret, upToYear - y - 1);
-    }
-    return fv;
-  }
 
   function updateChart(p) {
     const labels = [], regSeries = [], dirSeries = [], advSeries = [], commSeries = [], feeSeries = [];
@@ -590,9 +557,10 @@
       regSeries.push(Math.round(reg));
       commSeries.push(Math.round(dir - reg));           // cumulative commissions "lost"
       if (p.advisorOn) {
-        const feesFV = feesFVByYear(p.fee0, p.hike, p.hikeEvery, y, p.ret);
-        advSeries.push(Math.round(dir - feesFV));
-        feeSeries.push(Math.round(feesFV));
+        // Cumulative CASH fees paid through year y = flat annual fee × years elapsed
+        const feesCash = p.fee * y;
+        advSeries.push(Math.round(dir - feesCash));
+        feeSeries.push(Math.round(feesCash));
       }
     }
 
@@ -609,57 +577,21 @@
       datasets.push({ label: 'Advisory fees paid', data: feeSeries, yAxisID: 'y2', borderColor: 'rgba(122,93,168,0.75)', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [1, 3], tension: 0.3, pointRadius: 0, pointHoverRadius: 4, order: 5 });
     }
 
-    // Plugin: draw each line's FINAL value at its end, nudging overlapping labels apart
-    const endLabelPlugin = {
-      id: 'endLabels',
-      afterDatasetsDraw(chart) {
-        const { ctx, chartArea } = chart;
-        ctx.save();
-        ctx.font = '700 10.5px Georgia, serif';
-
-        // Collect end points
-        const items = [];
-        chart.data.datasets.forEach((ds, i) => {
-          const meta = chart.getDatasetMeta(i);
-          if (meta.hidden || !meta.data.length) return;
-          const pt = meta.data[meta.data.length - 1];
-          items.push({ y: pt.y, color: ds.borderColor, text: lakhCr(ds.data[ds.data.length - 1]) });
-        });
-        // Nudge apart so labels don't collide (min 14px gap)
-        items.sort((a, b) => a.y - b.y);
-        const gap = 14;
-        for (let k = 1; k < items.length; k++) {
-          if (items[k].y - items[k - 1].y < gap) items[k].y = items[k - 1].y + gap;
-        }
-        // Keep inside the plot vertically
-        const maxY = chartArea.bottom - 2;
-        for (let k = items.length - 1; k >= 0; k--) {
-          if (items[k].y > maxY) items[k].y = maxY - (items.length - 1 - k) * gap;
-        }
-
-        const x = chartArea.right + 6;
-        items.forEach(it => {
-          ctx.fillStyle = it.color;
-          ctx.beginPath();
-          ctx.arc(x, it.y, 2.5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(it.text, x + 6, it.y);
-        });
-        ctx.restore();
-      }
-    };
+    // Shared max across BOTH axes so ₹20L on the right sits at the same height
+    // ₹20L would on the left — the cost line reads honestly small next to the crore-scale corpus.
+    const corpusMax = Math.max(...dirSeries, ...regSeries, ...(p.advisorOn ? advSeries : []));
+    const axisMax = corpusMax * 1.05; // small headroom above the top line
 
     if (!growthChart) {
       growthChart = new Chart($('growthChart').getContext('2d'), {
         type: 'line',
         data: { labels, datasets },
-        plugins: [endLabelPlugin],
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: { padding: { right: 52, top: 6 } },
+          // Symmetric horizontal padding — no reserved gutter now that the
+          // end-of-line labels are gone. Values live in tooltips and the bars above.
+          layout: { padding: { left: 6, right: 6, top: 6 } },
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: {
@@ -677,16 +609,21 @@
             x: { grid: { display: false }, ticks: { color: '#8a7a60', font: { size: 10 }, maxTicksLimit: 7 } },
             y: {
               position: 'left',
+              min: 0,
+              max: axisMax,
               title: { display: true, text: 'Corpus', color: '#8a7a60', font: { size: 10, family: 'Georgia, serif' } },
               grid: { color: 'rgba(216,203,178,0.45)' },
               ticks: { color: '#8a7a60', font: { size: 10 }, maxTicksLimit: 6, callback: v => lakhCr(v) }
             },
             y2: {
               position: 'right',
+              min: 0,
+              max: axisMax,
+              // Right axis shares the left axis scale, so a ₹20L cost is drawn near the
+              // bottom — not blown up to look comparable to a ₹1.79 Cr corpus.
               title: { display: true, text: 'Costs paid', color: '#a08a68', font: { size: 10, family: 'Georgia, serif' } },
               grid: { drawOnChartArea: false },
-              ticks: { color: '#a08a68', font: { size: 10 }, maxTicksLimit: 6, callback: v => lakhCr(v) },
-              beginAtZero: true
+              ticks: { color: '#a08a68', font: { size: 10 }, maxTicksLimit: 6, callback: v => lakhCr(v) }
             }
           }
         }
@@ -694,11 +631,14 @@
     } else {
       growthChart.data.labels = labels;
       growthChart.data.datasets = datasets;
+      // Keep both axes locked to the shared scale as inputs change
+      growthChart.options.scales.y.max = axisMax;
+      growthChart.options.scales.y2.max = axisMax;
       growthChart.update();
     }
   }
 
-  ['amount','years','return','drag','fee','hike','hikeEvery'].forEach(id => {
+  ['amount','years','return','drag','fee'].forEach(id => {
     $(id).addEventListener('input', calc);
   });
   $('advisorOn').addEventListener('change', calc);
