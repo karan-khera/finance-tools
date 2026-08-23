@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simply Finance Tools</title>
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f4ede0;
+    --paper-2: #ece2d0;
+    --gold: #b8862f;
+    --gold-deep: #8f6412;
+    --red: #b23a2e;
+    --green: #2f6b46;
+    --line: #d8cbb2;
+    --shadow: rgba(60, 44, 20, 0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-image: radial-gradient(circle at 20% 10%, rgba(184,134,47,0.06), transparent 45%),
+                      radial-gradient(circle at 85% 90%, rgba(178,58,46,0.05), transparent 40%);
+    padding: 32px 18px 72px;
+    display: flex;
+    justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 720px; }
+
+  .masthead {
+    text-align: center;
+    border-top: 3px double var(--ink);
+    border-bottom: 3px double var(--ink);
+    padding: 18px 0 16px;
+    margin-bottom: 14px;
+  }
+  .kicker {
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gold-deep);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-size: 38px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .masthead p {
+    font-style: italic;
+    font-size: 18px;
+    color: #6b5c45;
+    margin-top: 10px;
+  }
+
+  .intro {
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a3f2e;
+    max-width: 560px;
+    margin: 0 auto 30px;
+  }
+
+  .section-label {
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold-deep);
+    margin: 0 0 14px 2px;
+  }
+
+  .tool-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 22px var(--shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px var(--shadow);
+    border-color: var(--gold);
+  }
+  .tool-card .tc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .tool-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .tool-card .arrow {
+    font-family: 'Courier New', monospace;
+    color: var(--gold-deep);
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .tool-card p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #6b5c45;
+  }
+  .tool-card .tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 1px solid rgba(47,107,70,0.4);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  /* Coming-soon placeholder cards */
+  .tool-card.soon {
+    background: transparent;
+    border-style: dashed;
+    box-shadow: none;
+    cursor: default;
+  }
+  .tool-card.soon:hover { transform: none; box-shadow: none; border-color: var(--line); }
+  .tool-card.soon h2 { color: #a99a7f; }
+  .tool-card.soon p { color: #a99a7f; }
+  .tool-card.soon .tag { color: #a99a7f; border-color: rgba(169,154,127,0.5); }
+
+  .foot {
+    text-align: center;
+    font-size: 14.4px;
+    color: #8a7a60;
+    font-style: italic;
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    line-height: 1.6;
+  }
+  .foot a { color: var(--gold-deep); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="kicker">Simply Finance by Karan</div>
+    <h1>Simple tools<br>for smarter money decisions</h1>
+  </div>
+
+  <p class="intro">
+    A growing collection of free, no-nonsense tools.<br>
+    Each one designed to turn a confusing money question into a clear, honest number.
+  </p>
+
+  <div class="section-label" style="font-size:13.8px;">Available now</div>
+
+  <a class="tool-card" href="commission-calculator/">
+    <div class="tc-top">
+      <h2>Regular vs Direct Fund Calculator</h2>
+      <span class="arrow">Open &rarr;</span>
+    </div>
+    <p>See exactly how much &ldquo;free&rdquo; advice costs you.</p>
+    <span class="tag">Mutual Funds</span>
+  </a>
+
+  <div class="section-label" style="margin-top:28px; font-size:15px;">More tools coming soon</div>
+
+  <div class="foot">
+    Built by Karan for <b>Simply Finance</b> &middot; <a href="https://karankhera.substack.com">Read the newsletter</a><br>
+    Illustrative tools for learning, not investment advice.
+  </div>
+</div>
+</body>
+</html>
