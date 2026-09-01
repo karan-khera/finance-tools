@@ -32,10 +32,13 @@
   .field input[type=number]:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(21,127,95,.12)}
   input[type=range]{width:100%;-webkit-appearance:none;height:4px;border-radius:4px;background:#e6e0d5;margin-top:9px;cursor:pointer}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:pointer}
+  input[type=range]:disabled{opacity:.45;cursor:not-allowed}
+  input[type=range]:disabled::-webkit-slider-thumb{background:var(--muted);cursor:not-allowed}
   .field{margin-bottom:6px}
   .hint{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.35}
   .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
   .full{grid-column:1/-1}
+  .locked-tag{font-size:10px;font-weight:800;letter-spacing:.04em;color:var(--muted);background:#efe9de;padding:2px 6px;border-radius:5px;margin-left:6px;text-transform:uppercase}
 
   /* option cards */
   .opt{border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden;transition:border-color .2s}
@@ -54,9 +57,10 @@
   .opt-body{display:none;padding:0 22px 22px;border-top:1px solid var(--line);margin-top:2px;padding-top:18px}
   .opt.on .opt-body{display:block;animation:reveal .25s ease}
   @keyframes reveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .subgroup{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
 
-  .seg{display:flex;gap:8px;margin-bottom:18px;background:#f0ebe0;padding:4px;border-radius:11px}
-  .seg button{flex:1;padding:9px 10px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.15s}
+  .seg{display:flex;gap:8px;margin-bottom:16px;background:#f0ebe0;padding:4px;border-radius:11px}
+  .seg button{flex:1;padding:9px 10px;border:none;background:transparent;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.15s}
   .seg button.sel{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
   .miniverdict{margin-top:18px;padding:14px 16px;border-radius:11px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -66,7 +70,6 @@
   .miniverdict .mv-r{font-family:Georgia,serif;font-size:24px}
   .miniverdict.pos .mv-r{color:var(--green)} .miniverdict.neg .mv-r{color:var(--red)}
 
-  /* final */
   .final .sectlabel{color:var(--rust)}
   .winner{font-family:Georgia,serif;font-size:clamp(22px,3.4vw,30px);line-height:1.15;margin-bottom:4px;letter-spacing:-.01em}
   .winner .amt{color:var(--green)}
@@ -77,18 +80,32 @@
   .legend span{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2);font-weight:600}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
   .chart-wrap{position:relative;width:100%;height:clamp(260px,36vh,360px);overflow:hidden;min-width:0}
-  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:16px}
-  th,td{text-align:right;padding:10px;border-bottom:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:16px}
+  th,td{text-align:right;padding:10px 8px;border-bottom:1px solid var(--line)}
   th:first-child,td:first-child{text-align:left}
-  thead th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  thead th{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;font-weight:700}
   td.pos{color:var(--green);font-weight:600} td.neg{color:var(--red);font-weight:600}
   .stratname{display:flex;align-items:center;gap:9px;font-weight:600}
   tr.win td{background:rgba(21,127,95,.07)}
+  .costcell{font-size:12.5px;line-height:1.4}
+
+  .callout{padding:15px 17px;border-radius:12px;margin-top:14px;font-size:13.5px;line-height:1.55}
+  .callout.rust{background:#f6e9dd;color:#7a3f14}
+  .callout.blue{background:#e6eff8;color:#204a73}
+  .callout b{font-weight:700}
 
   .taxstrip{font-size:13px;color:var(--ink-2);background:#f0ebe0;border-radius:10px;padding:11px 14px;margin-bottom:16px}
   .taxstrip b{color:var(--ink)}
+  .concl{margin-top:22px}
+  .concl h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:4px}
+  .concl-row{display:flex;gap:13px;padding:13px 0;border-top:1px solid var(--line)}
+  .concl-row .cbar{flex:none;width:4px;border-radius:3px;align-self:stretch}
+  .concl-row .ctitle{font-weight:700;font-size:14px;margin-bottom:3px}
+  .concl-row .ctext{font-size:13px;color:var(--ink-2);line-height:1.5}
+  .concl-row .ctext b{color:var(--ink)}
   .note{font-size:12.5px;color:var(--ink-2);line-height:1.6}
   .note b{color:var(--ink)}
+  .note ul{margin:8px 0 0 18px}.note li{margin-bottom:5px}
 </style>
 </head>
 <body>
@@ -96,7 +113,7 @@
   <header class="top">
     <div class="eyebrow">Regular · Fee-only advisor · PMS</div>
     <h1>Is it worth leaving your Regular mutual funds?</h1>
-    <p class="sub">Start with where you are today. Then tick the alternatives you're weighing — a fee-only advisor, or a PMS — and each one shows whether you'd end up ahead of simply staying put.</p>
+    <p class="sub">Start with where you are today. Then tick the alternatives you're weighing — a fee-only advisor, or a PMS — and each one shows whether you'd end up ahead of simply staying put, after fees, the switching tax, and (for a PMS) the tax you pay on churn every year.</p>
   </header>
 
   <!-- SETUP -->
@@ -125,6 +142,7 @@
       <div class="field">
         <label>Expected fund return <span class="val" id="v-ret"></span></label>
         <input type="range" id="ret-r" min="6" max="22" step="0.5" value="12">
+        <div class="hint">Your funds' growth before costs. This also drives the advisor option below.</div>
       </div>
       <div class="field">
         <label>Regular-plan commission <span class="val" id="v-comm"></span></label>
@@ -150,6 +168,11 @@
         <input type="range" id="ria-r" min="0" max="300000" step="5000" value="25000">
         <div class="hint">You earn the full return (no commission), minus this flat fee.</div>
       </div>
+      <div class="field">
+        <label>Expected return <span class="locked-tag">locked</span> <span class="val" id="v-riaret"></span></label>
+        <input type="range" id="riaret-r" min="6" max="22" step="0.5" value="12" disabled>
+        <div class="hint">Assumes an advisor-run Direct plan earns the same as your funds. Change it under "Where you are today" and this follows automatically.</div>
+      </div>
       <div class="miniverdict" id="riaVerdict">
         <div class="mv-l" id="riaVerdictL"></div>
         <div class="mv-r" id="riaVerdictR"></div>
@@ -163,7 +186,7 @@
       <div class="checkbox"></div>
       <div>
         <div class="opt-title">Option 2 · Move to a PMS</div>
-        <div class="opt-desc">A professionally managed portfolio. Higher fees, its own strategy.</div>
+        <div class="opt-desc">A professionally managed portfolio. Higher fees, its own strategy, and yearly tax on churn.</div>
         <div class="lockmsg" id="pmsLock" style="display:none"></div>
       </div>
     </div>
@@ -199,6 +222,26 @@
         </div>
       </div>
 
+      <div class="subgroup">
+        <div class="field">
+          <label>Expected PMS return <span class="val" id="v-pmsret"></span></label>
+          <input type="range" id="pmsret-r" min="6" max="24" step="0.5" value="14">
+          <div class="hint">Assumes the PMS generates extra return over your Regular funds or an advisor-run Direct plan. This is the alpha you're paying for.</div>
+        </div>
+      </div>
+
+      <div class="subgroup">
+        <div class="field">
+          <label>Annual portfolio churn <span class="val" id="v-churn"></span></label>
+          <input type="range" id="churn-r" min="0" max="200" step="10" value="40">
+          <div class="hint">How much of the portfolio the manager sells and rebuys each year. Unlike mutual funds, a PMS realises capital gains as it churns — taxed in your hands every year.</div>
+        </div>
+        <div class="seg" id="churnSeg" style="margin-top:12px">
+          <button data-tax="0.125" class="sel">Buy &amp; hold · 12.5% LTCG</button>
+          <button data-tax="0.20">Momentum · 20% STCG</button>
+        </div>
+      </div>
+
       <div class="miniverdict" id="pmsVerdict">
         <div class="mv-l" id="pmsVerdictL"></div>
         <div class="mv-r" id="pmsVerdictR"></div>
@@ -218,13 +261,14 @@
         <div class="legend" id="legend"></div>
         <div class="chart-wrap"><canvas id="chart"></canvas></div>
         <table id="cmpTable">
-          <thead><tr><th>Strategy</th><th>Effective annual cost</th><th>Wealth at horizon</th><th>vs Regular</th></tr></thead>
+          <thead><tr><th>Strategy</th><th>Return</th><th>Yearly cost</th><th>Wealth at horizon</th><th>vs Regular</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
+    <div class="concl" id="conclusion"></div>
     <p class="note" style="margin-top:18px">
-      <b>How it works:</b> leaving Regular realises long-term gains taxed at 12.5% above the ₹1.25L exemption — a one-time cost applied to any switch. Regular compounds at return − commission; every alternative earns the full return minus its own fee. All paths include your ongoing SIP. Figures are pre-terminal-tax. The PMS is assumed to earn the same return as your funds — adjust the return slider to stress-test a PMS that aims higher.
+      <b>How it works:</b> leaving Regular realises long-term gains taxed at 12.5% above the ₹1.25L exemption — a one-time cost on any switch. <b>Regular</b> compounds at your fund return minus commission; the <b>advisor</b> route earns the same fund return (no commission) minus a flat fee. The <b>PMS</b> earns its own return, minus its fee, minus the tax you owe each year on the gains it books as it churns — the drag a mutual fund defers until you finally sell. All paths include your SIP and are shown pre-terminal-tax.
     </p>
   </div>
 </div>
@@ -232,80 +276,106 @@
 <script>
 const EXEMPTION=125000, LTCG=0.125, PMS_MIN=5000000;
 const $=id=>document.getElementById(id);
-const state={ria:false, pms:false, pmsModel:'flat'};
+const state={ria:false, pms:false, pmsModel:'flat', churnTax:0.125};
 
 function fmtINR(x){x=Math.round(x);const n=x<0;x=Math.abs(x);let s=x.toString(),l=s.slice(-3),o=s.slice(0,-3);
   if(o)l=','+l;o=o.replace(/\B(?=(\d{2})+(?!\d))/g,',');return (n?'-':'')+'₹'+o+l;}
 function fmtCompact(x){const a=Math.abs(x),g=x<0?'-':'';
   if(a>=1e7)return g+'₹'+(a/1e7).toFixed(2)+' Cr';if(a>=1e5)return g+'₹'+(a/1e5).toFixed(2)+' L';return fmtINR(x);}
 
+// Mutual-fund vehicles (Regular, RIA): no churn tax, gains deferred.
 function project({corpus,sip,years,netRatePct,flatFee,tax}){
   const m=netRatePct/100/12, months=years*12; let bal=corpus-tax; const series=[bal];
   for(let i=1;i<=months;i++){bal=bal*(1+m)+sip; if(i%12===0){bal-=flatFee; series.push(bal);}}
   return {final:bal,series};
+}
+// PMS: own return, %-fee, and annual tax on churned gains (tracks cost basis).
+function projectPMS({corpus,sip,years,retPct,feePct,churnPct,taxRate,switchTax}){
+  const m=retPct/100/12, months=years*12;
+  let value=corpus-switchTax, basis=corpus-switchTax;
+  const series=[value]; let churnTaxTotal=0, valSum=0, valN=0;
+  for(let i=1;i<=months;i++){
+    value=value*(1+m); value+=sip; basis+=sip;
+    if(i%12===0){
+      value-=value*(feePct/100);                       // annual fee on AUM
+      const unrealized=Math.max(0,value-basis);
+      const realized=(churnPct/100)*unrealized;         // gains booked by churn
+      const t=realized*taxRate;
+      value-=t; basis+=realized; churnTaxTotal+=t;       // pay tax, step up basis
+      series.push(value); valSum+=value; valN++;
+    }
+  }
+  const avgVal=valSum/Math.max(1,valN);
+  const churnDragPct=avgVal>0? (churnTaxTotal/years)/avgVal*100 : 0;
+  return {final:value,series,churnTaxTotal,churnDragPct};
 }
 
 let chart;
 function render(){
   const p={corpus:+$('corpus').value,cost:+$('cost').value,sip:+$('sip').value,years:+$('years-r').value,
     ret:+$('ret-r').value,comm:+$('comm-r').value,ria:+$('ria').value,pmsFix:+$('pmsfix-r').value,
-    pmsBase:+$('pmsbase-r').value,perf:+$('perf-r').value,hurdle:+$('hurdle-r').value};
+    pmsBase:+$('pmsbase-r').value,perf:+$('perf-r').value,hurdle:+$('hurdle-r').value,
+    pmsRet:+$('pmsret-r').value,churn:+$('churn-r').value};
+
+  // locked advisor return mirrors the fund return
+  $('riaret-r').value=p.ret;
 
   // labels
   $('v-corpus').textContent=fmtCompact(p.corpus); $('v-cost').textContent=fmtCompact(p.cost);
   $('v-sip').textContent=fmtINR(p.sip); $('v-years').textContent=p.years+' yrs';
   $('v-ret').textContent=p.ret.toFixed(1)+'%'; $('v-comm').textContent=p.comm.toFixed(2)+'%';
-  $('v-ria').textContent=fmtINR(p.ria); $('v-pmsfix').textContent=p.pmsFix.toFixed(2)+'%';
-  $('v-pmsbase').textContent=p.pmsBase.toFixed(2)+'%'; $('v-perf').textContent=p.perf.toFixed(0)+'%';
-  $('v-hurdle').textContent=p.hurdle.toFixed(1)+'%';
+  $('v-ria').textContent=fmtINR(p.ria); $('v-riaret').textContent=p.ret.toFixed(1)+'%';
+  $('v-pmsfix').textContent=p.pmsFix.toFixed(2)+'%'; $('v-pmsbase').textContent=p.pmsBase.toFixed(2)+'%';
+  $('v-perf').textContent=p.perf.toFixed(0)+'%'; $('v-hurdle').textContent=p.hurdle.toFixed(1)+'%';
+  $('v-pmsret').textContent=p.pmsRet.toFixed(1)+'%'; $('v-churn').textContent=p.churn.toFixed(0)+'%';
 
   // PMS eligibility
   const allowed=p.corpus>=PMS_MIN;
   const pmsHead=$('pmsHead'), pmsLock=$('pmsLock');
   if(!allowed){
     if(state.pms){state.pms=false;$('optPms').classList.remove('on');}
-    pmsHead.classList.add('locked');
-    pmsLock.style.display='block';
+    pmsHead.classList.add('locked'); pmsLock.style.display='block';
     pmsLock.textContent='Needs a ₹50L+ portfolio to qualify — you’re at '+fmtCompact(p.corpus)+'.';
   }else{ pmsHead.classList.remove('locked'); pmsLock.style.display='none'; }
 
-  // tax (shared)
+  // shared switching tax
   const gain=Math.max(0,p.corpus-p.cost);
-  const tax=Math.max(0,gain-EXEMPTION)*LTCG;
+  const switchTax=Math.max(0,gain-EXEMPTION)*LTCG;
   $('taxStrip').innerHTML = gain>0
-    ? `<b>One-time switching tax: ${fmtCompact(tax)}</b> — 12.5% on the ${fmtCompact(gain)} gain above the ₹1.25L exemption. Applies to any move out of Regular.`
+    ? `<b>One-time switching tax: ${fmtCompact(switchTax)}</b> — 12.5% on the ${fmtCompact(gain)} gain above the ₹1.25L exemption. Applies to any move out of Regular.`
     : `<b>No switching tax</b> — your portfolio has no taxable long-term gain yet.`;
 
   // Regular baseline
   const reg=project({corpus:p.corpus,sip:p.sip,years:p.years,netRatePct:p.ret-p.comm,flatFee:0,tax:0});
-
   const active=[{id:'reg',name:'Stay in Regular',color:'#b45f1f',final:reg.final,series:reg.series,
-                 cost:p.comm.toFixed(2)+'% commission'}];
+                 ret:p.ret,cost:p.comm.toFixed(2)+'% commission'}];
 
   // RIA
   if(state.ria){
-    const r=project({corpus:p.corpus,sip:p.sip,years:p.years,netRatePct:p.ret,flatFee:p.ria,tax});
+    const r=project({corpus:p.corpus,sip:p.sip,years:p.years,netRatePct:p.ret,flatFee:p.ria,tax:switchTax});
     const adv=r.final-reg.final;
-    const mv=$('riaVerdict'); mv.className='miniverdict '+(adv>=0?'pos':'neg');
+    $('riaVerdict').className='miniverdict '+(adv>=0?'pos':'neg');
     $('riaVerdictL').textContent=`Ending wealth ${fmtCompact(r.final)} · vs Regular over ${p.years} yrs`;
     $('riaVerdictR').textContent=(adv>=0?'+':'−')+fmtCompact(Math.abs(adv));
     active.push({id:'ria',name:'Direct + fee-only advisor',color:'#157f5f',final:r.final,series:r.series,
-                 cost:fmtINR(p.ria)+' flat'});
+                 ret:p.ret,cost:fmtINR(p.ria)+' flat fee'});
   }
 
   // PMS
   if(state.pms){
-    let drag, costLabel;
-    if(state.pmsModel==='flat'){ drag=p.pmsFix; costLabel=p.pmsFix.toFixed(2)+'% of AUM'; }
-    else{ const perfDrag=p.perf/100*Math.max(0,p.ret-p.hurdle); drag=p.pmsBase+perfDrag;
-          costLabel=drag.toFixed(2)+'% ('+p.pmsBase.toFixed(2)+'% + '+perfDrag.toFixed(2)+'% profit share)'; }
-    const r=project({corpus:p.corpus,sip:p.sip,years:p.years,netRatePct:p.ret-drag,flatFee:0,tax});
+    let feePct, feeLabel;
+    if(state.pmsModel==='flat'){ feePct=p.pmsFix; feeLabel=p.pmsFix.toFixed(2)+'% fee'; }
+    else{ const perfDrag=p.perf/100*Math.max(0,p.pmsRet-p.hurdle); feePct=p.pmsBase+perfDrag;
+          feeLabel=feePct.toFixed(2)+'% fee ('+p.pmsBase.toFixed(2)+'%+'+perfDrag.toFixed(2)+'% share)'; }
+    const r=projectPMS({corpus:p.corpus,sip:p.sip,years:p.years,retPct:p.pmsRet,feePct,
+                        churnPct:p.churn,taxRate:state.churnTax,switchTax});
     const adv=r.final-reg.final;
-    const mv=$('pmsVerdict'); mv.className='miniverdict '+(adv>=0?'pos':'neg');
-    $('pmsVerdictL').textContent=`Ending wealth ${fmtCompact(r.final)} · vs Regular over ${p.years} yrs`;
+    $('pmsVerdict').className='miniverdict '+(adv>=0?'pos':'neg');
+    $('pmsVerdictL').textContent=`Ending wealth ${fmtCompact(r.final)} · after ${fmtCompact(r.churnTaxTotal)} churn tax · vs Regular`;
     $('pmsVerdictR').textContent=(adv>=0?'+':'−')+fmtCompact(Math.abs(adv));
     active.push({id:'pms',name:'PMS ('+(state.pmsModel==='flat'?'flat fee':'profit share')+')',
-                 color:'#2f6fb0',final:r.final,series:r.series,cost:costLabel});
+                 color:'#2f6fb0',final:r.final,series:r.series,ret:p.pmsRet,
+                 cost:feeLabel+' + ~'+r.churnDragPct.toFixed(2)+'% churn tax'});
   }
 
   // final section
@@ -317,15 +387,14 @@ function render(){
     const wl=$('winLine');
     if(best.id==='reg'){ wl.className='winner stay';
       wl.innerHTML=`Staying in Regular still wins — <span class="amt">${fmtCompact(reg.final)}</span>`;
-      $('winSub').textContent='At these settings the switching tax and fees cost more than the commission you’d save.';
+      $('winSub').textContent='At these settings the switching tax, fees and churn tax cost more than what the alternatives add.';
     }else{ wl.className='winner';
       wl.innerHTML=`${best.name} comes out ahead by <span class="amt">+${fmtCompact(best.final-reg.final)}</span>`;
       $('winSub').textContent=`Extra wealth over ${p.years} years vs staying Regular — ending at ${fmtCompact(best.final)}.`;
     }
 
-    // legend + chart
     const lg=$('legend'); lg.innerHTML='';
-    active.forEach(a=>{lg.insertAdjacentHTML('beforeend',`<span><i class="dot" style="background:${a.color}"></i>${a.name}</span>`);});
+    active.forEach(a=>lg.insertAdjacentHTML('beforeend',`<span><i class="dot" style="background:${a.color}"></i>${a.name}</span>`));
     const labels=reg.series.map((_,i)=>i);
     const ds=active.map(a=>({label:a.name,data:a.series,borderColor:a.color,backgroundColor:a.color,
       borderWidth:2.4,fill:false,tension:.25,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:a.color}));
@@ -343,8 +412,47 @@ function render(){
       const advc=a.id==='reg'?'<td style="color:var(--muted)">— baseline</td>'
         :`<td class="${adv>=0?'pos':'neg'}">${adv>=0?'+':'−'}${fmtCompact(Math.abs(adv))}</td>`;
       tr.innerHTML=`<td><span class="stratname"><i class="dot" style="background:${a.color}"></i>${a.name}</span></td>`+
-        `<td>${a.cost}</td><td>${fmtCompact(a.final)}</td>`+advc; tb.appendChild(tr);});
+        `<td>${a.ret.toFixed(1)}%</td><td class="costcell">${a.cost}</td><td>${fmtCompact(a.final)}</td>`+advc;
+      tb.appendChild(tr);});
   }
+
+  // ---- conclusion: when does each option make sense ----
+  // RIA breakeven fee vs Regular (advantage is linear in the flat fee)
+  let blo=0,bhi=3000000;
+  for(let i=0;i<44;i++){const mid=(blo+bhi)/2;
+    const f=project({corpus:p.corpus,sip:p.sip,years:p.years,netRatePct:p.ret,flatFee:mid,tax:switchTax}).final;
+    if(f>reg.final)blo=mid;else bhi=mid;}
+  const riaBE=(blo+bhi)/2;
+
+  // PMS breakeven return vs Regular (given the current fee model, churn and churn-tax rate)
+  const pmsFinalAtRet=rp=>{
+    const feePct = state.pmsModel==='flat' ? p.pmsFix : p.pmsBase+p.perf/100*Math.max(0,rp-p.hurdle);
+    return projectPMS({corpus:p.corpus,sip:p.sip,years:p.years,retPct:rp,feePct,
+      churnPct:p.churn,taxRate:state.churnTax,switchTax}).final;
+  };
+  let pmsBE=null;
+  if(pmsFinalAtRet(40)>=reg.final){
+    let rlo=4,rhi=40;
+    if(pmsFinalAtRet(rlo)>=reg.final) pmsBE=rlo;
+    else { for(let i=0;i<44;i++){const mid=(rlo+rhi)/2; if(pmsFinalAtRet(mid)>=reg.final)rhi=mid;else rlo=mid;} pmsBE=(rlo+rhi)/2; }
+  }
+  const cross = p.perf>0 ? p.hurdle + (p.pmsFix-p.pmsBase)/(p.perf/100) : null;
+
+  const rows=[
+    {c:'#b45f1f',t:'Stay in your Regular plan',
+     x:`Best when you value simplicity and tax deferral, have a short horizon, or a large embedded gain. Every switch first has to earn back the ${switchTax>0?fmtCompact(switchTax)+' exit tax':'exit tax (none here yet)'} before it adds a rupee — and mutual funds defer all their tax until you finally sell.`},
+    {c:'#157f5f',t:'Direct + a fee-only advisor',
+     x: riaBE<=1000
+        ? `Even a near-free advisor can't beat staying Regular over this horizon — the switching tax is too heavy. A longer horizon or a smaller embedded gain would flip it.`
+        : `The lowest-cost way to buy advice. It beats staying Regular as long as the fee stays under about <b>${fmtINR(riaBE)}/year</b> (you've entered ${fmtINR(p.ria)}). The bigger your corpus, the easier this wins — a flat fee is a shrinking % of a growing portfolio, and there's no yearly churn tax.`},
+    {c:'#2f6fb0',t:'Move to a PMS',
+     x: (pmsBE===null
+        ? `At this fee and ${p.churn.toFixed(0)}% churn, the PMS would need well over 40% a year to catch up — it effectively can't justify itself at these settings.`
+        : `Only worth it if the manager genuinely out-earns your funds: it must clear roughly <b>${pmsBE.toFixed(1)}% a year</b> just to match Regular, versus the ${p.ret.toFixed(1)}% your funds would make on their own. Suits ₹50L+ corpuses and investors who want a concentrated, high-conviction bet — and can stomach the yearly capital-gains paperwork.`)
+        + (cross!==null?` <span style="color:var(--muted)">On fee structure alone, profit-share is cheaper below a ${cross.toFixed(1)}% return and the flat ${p.pmsFix.toFixed(2)}% above it.</span>`:'')}
+  ];
+  $('conclusion').innerHTML='<h3>When does each option make sense?</h3>'+
+    rows.map(r=>`<div class="concl-row"><div class="cbar" style="background:${r.c}"></div><div><div class="ctitle">${r.t}</div><div class="ctext">${r.x}</div></div></div>`).join('');
 }
 
 // toggles
@@ -358,13 +466,17 @@ $('pmsSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!
   $('pmsFlatFields').style.display=state.pmsModel==='flat'?'block':'none';
   $('pmsFlexFields').style.display=state.pmsModel==='flex'?'block':'none';
   render();});
+$('churnSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  state.churnTax=+b.dataset.tax;
+  [...$('churnSeg').children].forEach(x=>x.classList.toggle('sel',x===b));
+  render();});
 
 function link(numId,rangeId){const n=$(numId),rg=rangeId?$(rangeId):null;
   n.addEventListener('input',()=>{if(rg)rg.value=n.value;render();});
   if(rg)rg.addEventListener('input',()=>{n.value=rg.value;render();});}
 link('corpus','corpus-r'); link('cost','cost-r'); link('ria','ria-r');
 $('sip').addEventListener('input',render);
-['years-r','ret-r','comm-r','pmsfix-r','pmsbase-r','perf-r','hurdle-r'].forEach(id=>$(id).addEventListener('input',render));
+['years-r','ret-r','comm-r','pmsfix-r','pmsbase-r','perf-r','hurdle-r','pmsret-r','churn-r'].forEach(id=>$(id).addEventListener('input',render));
 
 render();
 new ResizeObserver(()=>chart&&chart.resize()).observe(document.querySelector('.chart-wrap'));
